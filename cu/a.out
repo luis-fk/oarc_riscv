@@ -1,0 +1,228 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "D:\iverilog\lib\ivl\system.vpi";
+:vpi_module "D:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "D:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "D:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "D:\iverilog\lib\ivl\va_math.vpi";
+S_0000022ec964a530 .scope module, "cu" "cu" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 7 "op";
+    .port_info 1 /INPUT 3 "funct3";
+    .port_info 2 /INPUT 1 "funct7b5";
+    .port_info 3 /INPUT 1 "Zero";
+    .port_info 4 /OUTPUT 2 "ResultSrc";
+    .port_info 5 /OUTPUT 1 "MemWrite";
+    .port_info 6 /OUTPUT 1 "PCSrc";
+    .port_info 7 /OUTPUT 1 "ALUSrc";
+    .port_info 8 /OUTPUT 1 "RegWrite";
+    .port_info 9 /OUTPUT 1 "Jump";
+    .port_info 10 /OUTPUT 2 "ImmSrc";
+    .port_info 11 /OUTPUT 3 "ALUControl";
+o0000022ec9651578 .functor BUFZ 1, C4<z>; HiZ drive
+L_0000022ec964a960 .functor AND 1, L_0000022ec969ea70, o0000022ec9651578, C4<1>, C4<1>;
+L_0000022ec964af10 .functor OR 1, L_0000022ec964a960, L_0000022ec969fd30, C4<0>, C4<0>;
+v0000022ec9643760_0 .net "ALUControl", 2 0, v0000022ec97673c0_0;  1 drivers
+v0000022ec9643440_0 .net "ALUOp", 1 0, L_0000022ec969e1b0;  1 drivers
+v0000022ec9642ae0_0 .net "ALUSrc", 0 0, L_0000022ec969f970;  1 drivers
+v0000022ec9643800_0 .net "Branch", 0 0, L_0000022ec969ea70;  1 drivers
+v0000022ec9643620_0 .net "ImmSrc", 1 0, L_0000022ec969e890;  1 drivers
+v0000022ec96436c0_0 .net "Jump", 0 0, L_0000022ec969fd30;  1 drivers
+v0000022ec9642c20_0 .net "MemWrite", 0 0, L_0000022ec969e4d0;  1 drivers
+v0000022ec96431c0_0 .net "PCSrc", 0 0, L_0000022ec964af10;  1 drivers
+v0000022ec9643580_0 .net "RegWrite", 0 0, L_0000022ec969f790;  1 drivers
+v0000022ec969fc90_0 .net "ResultSrc", 1 0, L_0000022ec969e2f0;  1 drivers
+v0000022ec969e390_0 .net "Zero", 0 0, o0000022ec9651578;  0 drivers
+v0000022ec969fb50_0 .net *"_ivl_2", 0 0, L_0000022ec964a960;  1 drivers
+o0000022ec9651038 .functor BUFZ 3, C4<zzz>; HiZ drive
+v0000022ec969e250_0 .net "funct3", 2 0, o0000022ec9651038;  0 drivers
+o0000022ec9651068 .functor BUFZ 1, C4<z>; HiZ drive
+v0000022ec969f5b0_0 .net "funct7b5", 0 0, o0000022ec9651068;  0 drivers
+o0000022ec9651368 .functor BUFZ 7, C4<zzzzzzz>; HiZ drive
+v0000022ec969eb10_0 .net "op", 6 0, o0000022ec9651368;  0 drivers
+L_0000022ec969ebb0 .part o0000022ec9651368, 5, 1;
+S_0000022ec976e040 .scope module, "ad" "aludec" 2 16, 3 1 0, S_0000022ec964a530;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "opb5";
+    .port_info 1 /INPUT 3 "funct3";
+    .port_info 2 /INPUT 1 "funct7b5";
+    .port_info 3 /INPUT 2 "ALUOp";
+    .port_info 4 /OUTPUT 3 "ALUControl";
+L_0000022ec964ad50 .functor AND 1, o0000022ec9651068, L_0000022ec969ebb0, C4<1>, C4<1>;
+v0000022ec97673c0_0 .var "ALUControl", 2 0;
+v0000022ec9766ff0_0 .net "ALUOp", 1 0, L_0000022ec969e1b0;  alias, 1 drivers
+v0000022ec96438a0_0 .net "RtypeSub", 0 0, L_0000022ec964ad50;  1 drivers
+v0000022ec9642d60_0 .net "funct3", 2 0, o0000022ec9651038;  alias, 0 drivers
+v0000022ec96429a0_0 .net "funct7b5", 0 0, o0000022ec9651068;  alias, 0 drivers
+v0000022ec9643260_0 .net "opb5", 0 0, L_0000022ec969ebb0;  1 drivers
+E_0000022ec97699f0 .event anyedge, v0000022ec9766ff0_0, v0000022ec9642d60_0, v0000022ec96438a0_0;
+S_0000022ec976e1d0 .scope module, "md" "maindec" 2 15, 4 1 0, S_0000022ec964a530;
+ .timescale 0 0;
+    .port_info 0 /INPUT 7 "op";
+    .port_info 1 /OUTPUT 2 "ResultSrc";
+    .port_info 2 /OUTPUT 1 "MemWrite";
+    .port_info 3 /OUTPUT 1 "Branch";
+    .port_info 4 /OUTPUT 1 "ALUSrc";
+    .port_info 5 /OUTPUT 1 "RegWrite";
+    .port_info 6 /OUTPUT 1 "Jump";
+    .port_info 7 /OUTPUT 2 "ImmSrc";
+    .port_info 8 /OUTPUT 2 "ALUOp";
+v0000022ec9642a40_0 .net "ALUOp", 1 0, L_0000022ec969e1b0;  alias, 1 drivers
+v0000022ec9642e00_0 .net "ALUSrc", 0 0, L_0000022ec969f970;  alias, 1 drivers
+v0000022ec9642fe0_0 .net "Branch", 0 0, L_0000022ec969ea70;  alias, 1 drivers
+v0000022ec9642ea0_0 .net "ImmSrc", 1 0, L_0000022ec969e890;  alias, 1 drivers
+v0000022ec9642cc0_0 .net "Jump", 0 0, L_0000022ec969fd30;  alias, 1 drivers
+v0000022ec96434e0_0 .net "MemWrite", 0 0, L_0000022ec969e4d0;  alias, 1 drivers
+v0000022ec96433a0_0 .net "RegWrite", 0 0, L_0000022ec969f790;  alias, 1 drivers
+v0000022ec9642f40_0 .net "ResultSrc", 1 0, L_0000022ec969e2f0;  alias, 1 drivers
+v0000022ec9643300_0 .net *"_ivl_10", 10 0, v0000022ec9643120_0;  1 drivers
+v0000022ec9643120_0 .var "controls", 10 0;
+v0000022ec9642b80_0 .net "op", 6 0, o0000022ec9651368;  alias, 0 drivers
+E_0000022ec9769a70 .event anyedge, v0000022ec9642b80_0;
+L_0000022ec969f790 .part v0000022ec9643120_0, 10, 1;
+L_0000022ec969e890 .part v0000022ec9643120_0, 8, 2;
+L_0000022ec969f970 .part v0000022ec9643120_0, 7, 1;
+L_0000022ec969e4d0 .part v0000022ec9643120_0, 6, 1;
+L_0000022ec969e2f0 .part v0000022ec9643120_0, 4, 2;
+L_0000022ec969ea70 .part v0000022ec9643120_0, 3, 1;
+L_0000022ec969e1b0 .part v0000022ec9643120_0, 1, 2;
+L_0000022ec969fd30 .part v0000022ec9643120_0, 0, 1;
+    .scope S_0000022ec976e1d0;
+T_0 ;
+    %wait E_0000022ec9769a70;
+    %load/vec4 v0000022ec9642b80_0;
+    %dup/vec4;
+    %pushi/vec4 3, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.0, 6;
+    %dup/vec4;
+    %pushi/vec4 35, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.1, 6;
+    %dup/vec4;
+    %pushi/vec4 51, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.2, 6;
+    %dup/vec4;
+    %pushi/vec4 99, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.3, 6;
+    %dup/vec4;
+    %pushi/vec4 19, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.4, 6;
+    %dup/vec4;
+    %pushi/vec4 111, 0, 7;
+    %cmp/u;
+    %jmp/1 T_0.5, 6;
+    %pushi/vec4 2047, 2047, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.0 ;
+    %pushi/vec4 1168, 0, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.1 ;
+    %pushi/vec4 448, 0, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.2 ;
+    %pushi/vec4 1796, 768, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.3 ;
+    %pushi/vec4 522, 0, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.4 ;
+    %pushi/vec4 1156, 0, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.5 ;
+    %pushi/vec4 1825, 0, 11;
+    %store/vec4 v0000022ec9643120_0, 0, 11;
+    %jmp T_0.7;
+T_0.7 ;
+    %pop/vec4 1;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0000022ec976e040;
+T_1 ;
+    %wait E_0000022ec97699f0;
+    %load/vec4 v0000022ec9766ff0_0;
+    %dup/vec4;
+    %pushi/vec4 0, 0, 2;
+    %cmp/u;
+    %jmp/1 T_1.0, 6;
+    %dup/vec4;
+    %pushi/vec4 1, 0, 2;
+    %cmp/u;
+    %jmp/1 T_1.1, 6;
+    %load/vec4 v0000022ec9642d60_0;
+    %dup/vec4;
+    %pushi/vec4 0, 0, 3;
+    %cmp/u;
+    %jmp/1 T_1.4, 6;
+    %dup/vec4;
+    %pushi/vec4 2, 0, 3;
+    %cmp/u;
+    %jmp/1 T_1.5, 6;
+    %dup/vec4;
+    %pushi/vec4 6, 0, 3;
+    %cmp/u;
+    %jmp/1 T_1.6, 6;
+    %dup/vec4;
+    %pushi/vec4 7, 0, 3;
+    %cmp/u;
+    %jmp/1 T_1.7, 6;
+    %pushi/vec4 7, 7, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.9;
+T_1.4 ;
+    %load/vec4 v0000022ec96438a0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.10, 8;
+    %pushi/vec4 1, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.11;
+T_1.10 ;
+    %pushi/vec4 0, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+T_1.11 ;
+    %jmp T_1.9;
+T_1.5 ;
+    %pushi/vec4 5, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.9;
+T_1.6 ;
+    %pushi/vec4 3, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.9;
+T_1.7 ;
+    %pushi/vec4 2, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.9;
+T_1.9 ;
+    %pop/vec4 1;
+    %jmp T_1.3;
+T_1.0 ;
+    %pushi/vec4 0, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.3;
+T_1.1 ;
+    %pushi/vec4 1, 0, 3;
+    %store/vec4 v0000022ec97673c0_0, 0, 3;
+    %jmp T_1.3;
+T_1.3 ;
+    %pop/vec4 1;
+    %jmp T_1;
+    .thread T_1, $push;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    ".\cu.v";
+    ".\aludec.v";
+    ".\maindec.v";

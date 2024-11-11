@@ -1,0 +1,65 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Mon Nov 11 00:49:30 2024
+[*]
+[dumpfile] "D:\Studies\materiais\Sistemas Digitais\SD II\oarc\wave.vcd"
+[dumpfile_mtime] "Mon Nov 11 00:44:53 2024"
+[dumpfile_size] 22020
+[savefile] "D:\Studies\materiais\Sistemas Digitais\SD II\oarc\temp.gtkw"
+[timestart] 103
+[size] 1536 801
+[pos] -61 -61
+*-4.000000 133 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] pipelined_riscv_tb.
+[treeopen] pipelined_riscv_tb.uut.
+[treeopen] pipelined_riscv_tb.uut.fd.
+[treeopen] pipelined_riscv_tb.uut.fd.e.
+[treeopen] pipelined_riscv_tb.uut.fd.f.
+[treeopen] pipelined_riscv_tb.uut.fd.m.
+[sst_width] 260
+[signals_width] 254
+[sst_expanded] 1
+[sst_vpaned_height] 257
+@28
+pipelined_riscv_tb.uut.fd.d.register_file.clk
+pipelined_riscv_tb.uut.reset_pc
+@200
+-Fetch
+@22
+pipelined_riscv_tb.uut.fd.f.next_instruction_wire[63:0]
+pipelined_riscv_tb.uut.fd.f.program_counter[63:0]
+pipelined_riscv_tb.uut.fd.f.instruction[31:0]
+pipelined_riscv_tb.uut.fd.f.pc_target[63:0]
+@28
+pipelined_riscv_tb.uut.fd.f.branch
+@22
+pipelined_riscv_tb.uut.fd.f.program_counter_mux[63:0]
+pipelined_riscv_tb.uut.fd.f.pc_current_instruction[63:0]
+pipelined_riscv_tb.uut.fd.f.pc_next_instruction[63:0]
+pipelined_riscv_tb.uut.fd.f.read_data[31:0]
+@200
+-Decode
+-Execute
+@28
+pipelined_riscv_tb.uut.fd.e.alu_src
+@22
+pipelined_riscv_tb.uut.fd.e.ALU.A[63:0]
+pipelined_riscv_tb.uut.fd.e.ALU.B[63:0]
+pipelined_riscv_tb.uut.fd.e.ALU.result[63:0]
+@200
+-Memory
+@28
+pipelined_riscv_tb.uut.fd.m.mem_write
+@22
+pipelined_riscv_tb.uut.fd.m.alu_result[63:0]
+pipelined_riscv_tb.uut.fd.m.write_data_m[63:0]
+pipelined_riscv_tb.uut.fd.m.mem_data_wire[63:0]
+pipelined_riscv_tb.uut.fd.m.alu_result_m[63:0]
+pipelined_riscv_tb.uut.fd.m.rd[4:0]
+pipelined_riscv_tb.uut.fd.m.data_mem.read_data[63:0]
+@23
+pipelined_riscv_tb.uut.fd.m.data_mem.endereco[63:0]
+@200
+-Write back
+[pattern_trace] 1
+[pattern_trace] 0

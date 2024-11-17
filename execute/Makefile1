@@ -1,0 +1,29 @@
+# Variáveis
+IVERILOG = iverilog
+VVP = vvp
+GTKWAVE = gtkwave
+OUTPUT = wave.vvp
+VCD = wave.vcd
+TESTBENCH = ALU.v execute_tb.v execute.v floprc.v mux_15x1_64bit_ALU.v mux2.v mux3.v \
+            ../decode/adder/xor.v ../decode/adder/or.v ../decode/adder/and.v \
+            ../decode/adder/Adder64b_mod.v ../decode/adder/CLAAdder8b_mod.v \
+            ../decode/adder/PartialFullAdder1b_mod.v
+
+# Alvo padrão
+all: wave
+
+# Compila o código com iverilog
+$(OUTPUT): $(TESTBENCH)
+	$(IVERILOG) -o $@ $^
+
+# Executa o código compilado
+run: $(OUTPUT)
+	$(VVP) $<
+
+# Abre o gtkwave
+wave: run
+	$(GTKWAVE) $(VCD)
+
+# Limpa arquivos gerados
+clean:
+	rm -f $(OUTPUT) $(VCD)

@@ -1,0 +1,49 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Nov 17 19:22:25 2024
+[*]
+[dumpfile] "/home/usuario/faculdade/oarc/oarc_riscv/memory/wave.vcd"
+[dumpfile_mtime] "Sun Nov 17 19:12:26 2024"
+[dumpfile_size] 2954
+[savefile] "/home/usuario/faculdade/oarc/oarc_riscv/memory/Waveform/WaveFormMemory.gtkw"
+[timestart] 0
+[size] 1920 1008
+[pos] -33 -33
+*-14.000000 39480 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] memory_tb.
+[treeopen] memory_tb.uut.
+[sst_width] 212
+[signals_width] 561
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+memory_tb.clock
+memory_tb.reset
+@200
+-Entrada
+@28
+memory_tb.MemWriteM
+@420
+memory_tb.ALUResultE[63:0]
+memory_tb.uut.ALUResultM[63:0]
+memory_tb.WriteDataE[63:0]
+@22
+memory_tb.uut.WriteDataM[63:0]
+@200
+-Saída
+@22
+memory_tb.ALUResultM[63:0]
+memory_tb.PCPlus4M[63:0]
+memory_tb.RD_Memory[63:0]
+@200
+-Memory
+@24
+memory_tb.uut.data_mem.endereco[63:0]
+@28
+memory_tb.uut.data_mem.mem_write
+@420
+memory_tb.uut.data_mem.read_data[63:0]
+@421
+memory_tb.uut.data_mem.write_data[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

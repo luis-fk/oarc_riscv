@@ -1,5 +1,5 @@
 module data_memory(input clk,      
-              input mem_read,
+              //input mem_read, (????)
               input mem_write,
               input [63:0] endereco, // Endereço de saída da ULA
               input [63:0] write_data, // Dados a serem escritos

@@ -1,16 +1,43 @@
 module write_back (
-    input [63:0] alu_result_w,
-    input [63:0] mem_data_w,
-    input [63:0] next_instruction_w,
-    input [1:0] result_src,
-    input [4:0] rd_w,
+    input clock,
+    input reset,
 
-    output [63:0] result_write_back,
-    output [4:0] rd
+    //Input do Memory
+    input [63:0] ALUResultM,
+    input [63:0] ReadDataM,
+    input [63:0] PCPlus4M,
+    input [4:0] RdM,
+
+    //Input da ULA
+    input [1:0] ResultSrcW,
+    
+    //Saídas do Memory
+    output [4:0]  RdW,
+    output [63:0] ResultW
 );
-    assign result_write_back = 
-        result_src == 2'd0 ? alu_result_w :
-            (result_src == 2'd1 ? mem_data_w : next_instruction_w);
-            
-    assign rd = rd_w;
+
+    wire [63:0] ALUResultW;
+    wire [63:0] ReadDataW;
+    wire [63:0] PCPlus4W;
+
+
+    flopr #(
+            .WIDTH(197) 
+        ) regM (
+            .clk(clock), 
+            .reset(reset),
+            .d({ALUResultM, ReadDataM, RdM, PCPlus4M}),
+            .q({ALUResultW, ReadDataW, RdW, PCPlus4W})
+    );
+
+    mux3 #(
+            .WIDTH(64) 
+        ) resultmux (
+            .d0(ALUResultW),
+            .d1(ReadDataW),
+            .d2(PCPlus4W), 
+            .s(ResultSrcW),
+            .y(ResultW)
+    );
+
 endmodule

@@ -1,73 +1,97 @@
+
+//Comandos Wind:
+
+//iverilog -o wave.vvp fetch_tb.v fetch.v flopenr.v instruction_memory.v mux2.v
+
+//vvp wave.vvp
+
+//gtkwave wave.vcd
+
+
+//Linux: make
+
+`timescale 1ns / 1ps
 module fetch_tb;
-    // Testbench signals
-    reg branch;
+
+    // Sinais de entrada do DUT
     reg clock;
     reg reset_pc;
+    reg PCSrcE;
+    reg StallF;
     reg [63:0] pc_target;
-    wire [31:0] instruction;
-    wire [63:0] pc_current_instruction;
-    wire [63:0] pc_next_instruction;
 
-    // Instantiate the fetch module
+    // Sinais de saída do DUT
+    wire [31:0] InstrF;
+    wire [63:0] PCF;
+    wire [63:0] PCPlus4F;
+
+    // Instanciando o DUT (Device Under Test)
     fetch uut (
-        .reset_pc(reset_pc),
-        .branch(branch),
         .clock(clock),
+        .reset_pc(reset_pc),
+        .PCSrcE(PCSrcE),
+        .StallF(StallF),
         .pc_target(pc_target),
-        .instruction(instruction),
-        .pc_current_instruction(pc_current_instruction),
-        .pc_next_instruction(pc_next_instruction)
+        .InstrF(InstrF),
+        .PCF(PCF),
+        .PCPlus4F(PCPlus4F)
     );
 
-    // Clock generation
+    // Geração de clock
     initial begin
+        $dumpfile("wave.vcd");
+        $dumpvars(0, fetch_tb);
         clock = 0;
-        forever #5 clock = ~clock; // 10 time units period
+        forever #5 clock = ~clock; // Clock de 10 unidades de tempo
     end
 
-    // Function to verify the output
-    task verify_output;
-        input [63:0] expected_instruction;
-        begin
-            #10; // Wait for a full clock cycle to read the output
-            if (instruction !== expected_instruction) begin
-                $display("Test failed: instruction = %0d, expected = %0d", instruction, expected_instruction);
-            end else begin
-                $display("Test passed: instruction = %0d", instruction);
-            end
-        end
-    endtask
-
-    // Test sequence
+    // Estímulos
     initial begin
-        // Initialize inputs
-        branch = 0;
+        // Inicializa os sinais
+        reset_pc = 1;
+        PCSrcE = 0;
+        StallF = 0;
         pc_target = 64'd0;
-        reset_pc = 1'b1;
 
-        // Apply reset
-        #20;  // Wait for a couple of cycles for reset
-        reset_pc = 1'b0; // Release reset
+        // Espera alguns ciclos para o reset
+        #10;
+        reset_pc = 0;
 
-        // Test case 1: No branch, expect instruction at address 0
-        branch = 0;
-        pc_target = 64'd0;
-        verify_output(64'd1); // Expect first memory instruction value
-        
-        // Test case 2: Branch to a specific target address
-        branch = 1;
+        // Teste 1: Incremento normal do PC
+        #10;
+        StallF = 0;    // Sem stall
+        PCSrcE = 0;    // PC continua incrementando normalmente
+
+        // Teste 2: Muda o PC com PCSrcE
+        #20;
+        PCSrcE = 1;    // Altera o PC para pc_target
         pc_target = 64'd20;
-        #10
-        branch = 0;
-        verify_output(64'd20); // Verify branch target instruction
 
-        // Test case 3: No branch, expect to continue incrementing
-        verify_output(64'd21); // Expect instruction after branch target
-        
-        // Test case 4: No branch, continuous increment
-        verify_output(64'd22);
+        #20
+        PCSrcE = 0;
 
-        // Finish simulation
-        $stop;
+        // Teste 3: Sinal de stall
+        #30;
+        StallF = 1;    // Mantém o valor atual do PC
+
+        #30
+        StallF = 0;
+
+        // Teste 4: Reseta o PC
+        #40;
+        reset_pc = 1;
+
+        // Fim da simulação
+        #50;
+        $finish;
     end
+
+    // Monitor para observar os sinais
+    initial begin
+        $monitor(
+            "Time=%0t | reset_pc=%b | PCSrcE=%b | StallF=%b | pc_target=%d | PCF=%d | PCPlus4F=%d | InstrF=%h",
+            $time, reset_pc, PCSrcE, StallF, pc_target, PCF, PCPlus4F, InstrF
+        );
+    end
+
 endmodule

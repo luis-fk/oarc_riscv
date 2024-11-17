@@ -1,162 +1,135 @@
-module execute_tb();
+`timescale 1ns / 1ps
+
+module execute_tb;
+
+    // Declaração de sinais
     reg clock;
-    reg reg_write_d;
-    reg [1:0] result_src_d;
-    reg mem_write_d;
-    reg jump;
-    reg branch;
-    reg [3:0] alu_control;
-    reg alu_src;
+    reg reset;
+    reg [2:0] ALUControlE;
+    reg ALUSrcE;
+    reg [63:0] ALUResultM;
+    reg [63:0] ResultW;
+    reg FlushE;
+    reg [1:0] ForwardAE;
+    reg [1:0] ForwardBE;
     reg [63:0] read_data1;
     reg [63:0] read_data2;
-    reg [63:0] pc;
-    reg [4:0] destination_register_d;
-    reg [63:0] immediate_extended;
-    reg [63:0] pc_plus4_d;
+    reg [63:0] PCD;
+    reg [4:0] RdD;
+    reg [63:0] ImmExtD;
+    reg [63:0] PCPlus4D;
+    reg [4:0] Rs1D;
+    reg [4:0] Rs2D;
 
-    wire pc_source;
-    wire [63:0] pc_target;
-    wire reg_write_e;
-    wire [1:0] result_src_e;
-    wire mem_write_e;
-    wire [63:0] alu_result;
-    wire [63:0] write_data;
-    wire [4:0] destination_register_e;
-    wire [63:0] pc_plus4_e;
+    // Saídas
+    wire zeroE;
+    wire [63:0] PCTargetE;
+    wire [63:0] ALUResultE;
+    wire [63:0] WriteDataE;
+    wire [4:0] RdE;
+    wire [63:0] PCPlus4E;
 
+    // Instanciando o módulo execute
     execute uut (
         .clock(clock),
-        .reg_write_d(reg_write_d),
-        .result_src_d(result_src_d),
-        .mem_write_d(mem_write_d),
-        .jump(jump),
-        .branch(branch),
-        .alu_control(alu_control),
-        .alu_src(alu_src),
+        .reset(reset),
+        .ALUControlE(ALUControlE),
+        .ALUSrcE(ALUSrcE),
+        .ALUResultM(ALUResultM),
+        .ResultW(ResultW),
+        .FlushE(FlushE),
+        .ForwardAE(ForwardAE),
+        .ForwardBE(ForwardBE),
         .read_data1(read_data1),
         .read_data2(read_data2),
-        .pc(pc),
-        .destination_register_d(destination_register_d),
-        .immediate_extended(immediate_extended),
-        .pc_plus4_d(pc_plus4_d),
-        .pc_source(pc_source),
-        .pc_target(pc_target),
-        .reg_write_e(reg_write_e),
-        .result_src_e(result_src_e),
-        .mem_write_e(mem_write_e),
-        .alu_result(alu_result),
-        .write_data(write_data),
-        .destination_register_e(destination_register_e),
-        .pc_plus4_e(pc_plus4_e)
+        .PCD(PCD),
+        .RdD(RdD),
+        .ImmExtD(ImmExtD),
+        .PCPlus4D(PCPlus4D),
+        .Rs1D(Rs1D),
+        .Rs2D(Rs2D),
+        .zeroE(zeroE),
+        .PCTargetE(PCTargetE),
+        .ALUResultE(ALUResultE),
+        .WriteDataE(WriteDataE),
+        .RdE(RdE),
+        .PCPlus4E(PCPlus4E)
     );
 
-    initial begin
-        clock = 0;
-        forever #5 clock = ~clock;
+    // Geração do clock
+    always begin
+        #5 clock = ~clock; // Toggle a cada 5 unidades de tempo
     end
-    
-    integer i = 1;
 
-    task verify_output;
-        input [63:0] expected_alu_result;
-        input expected_pc_source;
-        input [63:0] expected_write_data;
-        begin
-            $display("Test %d", i);
-            i = i + 1;
-
-            #10; 
-            if (alu_result !== expected_alu_result) begin
-                $display("ALU Test failed: alu_result = %0h, expected = %0h", alu_result, expected_alu_result);
-            end 
-            else if (pc_source !== expected_pc_source) begin
-                $display("PC Source Test failed: pc_source = %0b, expected = %0b", pc_source, expected_pc_source);
-            end
-            else if (write_data !== expected_write_data) begin
-                $display("Write Data Test failed: write_data = %0h, expected = %0h", write_data, expected_write_data);
-            end else begin
-                $display("Test %d passed", i);
-            end
-        end
-    endtask
-
+    // Inicializando sinais e aplicando estímulos
     initial begin
-        reg_write_d = 0;
-        result_src_d = 2'b00;
-        mem_write_d = 0;
-        jump = 0;
-        branch = 0;
-        alu_control = 4'b0000;
-        alu_src = 0;
-        read_data1 = 64'h0;
-        read_data2 = 64'h0;
-        pc = 64'h0;
-        destination_register_d = 5'b0;
-        immediate_extended = 64'h0;
-        pc_plus4_d = 64'h4;
+        // Inicialização
+        clock = 0;
+        reset = 0;
+        ALUControlE = 4'b0000;
+        ALUSrcE = 0;
+        ALUResultM = 64'b0;
+        ResultW = 64'b0;
+        FlushE = 0;
+        ForwardAE = 2'b00;
+        ForwardBE = 2'b00;
+        read_data1 = 64'hA5A5A5A5A5A5A5A5;
+        read_data2 = 64'h5A5A5A5A5A5A5A5A;
+        PCD = 64'h0000000000001000;
+        RdD = 5'b00001;
+        ImmExtD = 64'h0000000000000010;
+        PCPlus4D = 64'h0000000000001004;
+        Rs1D = 5'b00001;
+        Rs2D = 5'b00010;
 
+        // Reset
+        reset = 1;
+        #10 reset = 0;
+
+        // Teste 1: ALUControlE = 0000, ALUSrcE = 0 (Read data2)
+        ALUControlE = 4'b0000;
+        ALUSrcE = 0;
+        ForwardAE = 2'b00; // Sem forward
+        ForwardBE = 2'b00; // Sem forward
         #10;
 
-        // Test 1: ADD 
-        reg_write_d = 1;
-        alu_control = 4'b0000; 
-        read_data1 = 64'h3; 
-        read_data2 = 64'h4; 
-        destination_register_d = 5'd1;
+        // Teste 2: ALUControlE = 0001, ALUSrcE = 1 (Immediate)
+        ALUControlE = 4'b0001;
+        ALUSrcE = 1;
         #10;
-        verify_output(64'h7, 0, read_data2); 
 
-        // Test 2: AND 
-        alu_control = 4'b0001;
-        read_data1 = 64'hF0F0F0F0F0F0F0F0;
-        read_data2 = 64'h0F0F0F0F0F0F0F0F;
+        // Teste 3: Forwarding de ResultW
+        ForwardAE = 2'b01; // Forward de ResultW para RS1
+        ForwardBE = 2'b01; // Forward de ResultW para RS2
+        ResultW = 64'hDEADBEEFDEADBEEF;
         #10;
-        verify_output(64'h0, 0, read_data2); 
 
-        // Test 3: OR 
-        alu_control = 4'b0010; 
+        // Teste 4: FlushE ativo
+        FlushE = 1;
         #10;
-        verify_output(64'hFFFFFFFFFFFFFFFF, 0, read_data2); 
+        FlushE = 0;
 
-        // Test 4: SUB 
-        alu_control = 4'b0011; 
-        read_data1 = 64'hA;
-        read_data2 = 64'h3;
+        // Teste 5: ALUResultM como entrada para ForwardAE
+        ALUResultM = 64'h123456789ABCDEF0;
+        ForwardAE = 2'b10; // Forward de ALUResultM para RS1
         #10;
-        verify_output(64'h7, 0, read_data2); 
 
-        // Test 5: SLT 
-        alu_control = 4'b0101;
-        read_data1 = 64'h3;
-        read_data2 = 64'hA;
+        // Teste 6: Operação ALU com diferentes ALUControlE
+        ALUControlE = 4'b0010; // Soma
         #10;
-        verify_output(64'h1, 0, read_data2);
+        ALUControlE = 4'b0110; // Subtração
+        #10;
 
-        // Test 6: XOR 
-        alu_control = 4'b0100; 
-        read_data1 = 64'hF0F0F0F0F0F0F0F0;
-        read_data2 = 64'h0F0F0F0F0F0F0F0F;
-        #10;
-        verify_output(64'hFFFFFFFFFFFFFFFF, 0, read_data2); 
-
-        // Test 7: BEQ 
-        alu_src = 0;
-        branch = 1;
-        alu_control = 4'b0011;
-        read_data1 = 64'hA;
-        read_data2 = 64'hA; 
-        immediate_extended = 64'h4; 
-        #10;
-        verify_output(64'h0, 1, read_data2); 
-
-        // Test 8: JUMP
-        jump = 1;
-        branch = 0;
-        immediate_extended = 64'h10;
-        #10;
-        verify_output(alu_result, 1, read_data2); 
-
-        #10;
+        // Finalizando o teste
         $finish;
     end
+
+    // Monitoramento das saídas
+    initial begin
+        $dumpfile("wave.vcd");
+        $dumpvars(0, execute_tb);
+        $monitor("Time: %0t | ALUResultE: %h | WriteDataE: %h | PCTargetE: %h | ZeroE: %b",
+                 $time, ALUResultE, WriteDataE, PCTargetE, zeroE);
+    end
+
 endmodule

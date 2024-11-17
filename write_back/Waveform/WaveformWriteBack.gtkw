@@ -1,0 +1,43 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Nov 17 19:47:19 2024
+[*]
+[dumpfile] "/home/usuario/faculdade/oarc/oarc_riscv/write_back/wave.vcd"
+[dumpfile_mtime] "Sun Nov 17 19:41:05 2024"
+[dumpfile_size] 3126
+[savefile] "/home/usuario/faculdade/oarc/oarc_riscv/write_back/Waveform/WaveformWriteBack.gtkw"
+[timestart] 0
+[size] 1920 1008
+[pos] -33 -33
+*-14.242080 45340 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] write_back_tb.
+[sst_width] 212
+[signals_width] 216
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+write_back_tb.clock
+write_back_tb.reset
+@200
+-Entrada
+@420
+write_back_tb.ALUResultM[63:0]
+write_back_tb.uut.ReadDataM[63:0]
+write_back_tb.uut.PCPlus4M[63:0]
+@24
+write_back_tb.uut.RdM[4:0]
+@420
+write_back_tb.uut.ALUResultW[63:0]
+write_back_tb.uut.ReadDataW[63:0]
+@421
+write_back_tb.uut.PCPlus4W[63:0]
+@28
+write_back_tb.uut.ResultSrcW[1:0]
+@200
+-Saída
+@24
+write_back_tb.uut.RdW[4:0]
+@420
+write_back_tb.uut.ResultW[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

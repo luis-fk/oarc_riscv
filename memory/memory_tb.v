@@ -1,85 +1,83 @@
-module data_memory_tb;
-    // Testbench signals
-    reg clk;
-    reg mem_read;
-    reg mem_write;
-    reg [63:0] endereco;
-    reg [63:0] write_data;
-    wire [63:0] read_data;
+// //iverilog -o wave.vvp data_memory.v memory_tb.v memory.v flopr.v
 
-    // Instantiate the data_memory module
-    data_memory uut (
-        .clk(clk),
-        .mem_read(mem_read),
-        .mem_write(mem_write),
-        .endereco(endereco),
-        .write_data(write_data),
-        .read_data(read_data)
+// vvp wave.vvp
+
+// gtkwave wave.vcd
+
+//Linux: make
+
+`timescale 1ns / 1ps
+
+module memory_tb;
+
+    reg clock;
+    reg reset;
+    reg [63:0] ALUResultE;
+    reg [63:0] WriteDataE;
+    reg [4:0] RdE;
+    reg [63:0] PCPlus4E;
+    reg MemWriteM;
+
+    wire [4:0] RdM;
+    wire [63:0] PCPlus4M;
+    wire [63:0] RD_Memory;
+    wire [63:0] ALUResultM;
+
+    // Instancia o módulo memory
+    memory uut (
+        .clock(clock),
+        .reset(reset),
+        .ALUResultE(ALUResultE),
+        .WriteDataE(WriteDataE),
+        .RdE(RdE),
+        .PCPlus4E(PCPlus4E),
+        .MemWriteM(MemWriteM),
+        .RdM(RdM),
+        .PCPlus4M(PCPlus4M),
+        .RD_Memory(RD_Memory),
+        .ALUResultM(ALUResultM)
     );
 
-    // Clock generation
+    // Gera clock
+    always #5 clock = ~clock;
+
     initial begin
-        clk = 0;
-        forever #5 clk = ~clk; // 10 time units period
+        $dumpfile("wave.vcd");
+        $dumpvars(0, memory_tb);
+        // Inicialização
+        clock = 0;
+        reset = 1;
+        ALUResultE = 0;
+        WriteDataE = 0;
+        RdE = 0;
+        PCPlus4E = 0;
+        MemWriteM = 0;
+
+        // Solta o reset
+        #10 reset = 0;
+
+        // Teste de escrita na memória
+        #10 ALUResultE = 64'h000000000000000A;  // Endereço
+        WriteDataE = 64'hDEADBEEFDEADBEEF;     // Dado para escrever
+        RdE = 5'b00001;
+        PCPlus4E = 64'h0000000000000004;
+        MemWriteM = 1;                         // Habilita escrita na memória
+
+        #20 MemWriteM = 0;                     // Desabilita escrita
+
+        // Teste de leitura da memória
+        #10 ALUResultE = 64'h000000000000000A; // Endereço já escrito
+        WriteDataE = 64'h0;
+        RdE = 5'b00010;
+
+        // Aguarda alguns ciclos e verifica resultados
+        #30;
+        $display("ALUResultM: %h", ALUResultM);
+        $display("PCPlus4M: %h", PCPlus4M);
+        $display("RD_Memory: %h", RD_Memory);
+
+        // Finaliza simulação
+        #50 $finish;
     end
 
-    // Test sequence
-    initial begin
-        // Initialize inputs
-        mem_read = 0;
-        mem_write = 0;
-        endereco = 0;
-        write_data = 64'd0;
-
-        // Test case 1: Read from initial memory
-        #10;
-        mem_read = 1;
-        endereco = 64'd0;
-        #10;
-        if (read_data !== 64'd8) begin
-            $display("Test failed: Initial read, expected = 8, got = %0d", read_data);
-        end else begin
-            $display("Test passed: Initial read, read_data = %0d", read_data);
-        end
-        mem_read = 0;
-
-        // Test case 2: Write to memory at address 10
-        #10;
-        mem_write = 1;
-        endereco = 64'd10;
-        write_data = 64'd42;
-        #10; // Wait for write to complete
-        mem_write = 0;
-
-        // Test case 3: Read back from address 10 to verify write
-        #10;
-        mem_read = 1;
-        #10;
-        if (read_data !== 64'd42) begin
-            $display("Test failed: Write-then-read, expected = 42, got = %0d", read_data);
-        end else begin
-            $display("Test passed: Write-then-read, read_data = %0d", read_data);
-        end
-        mem_read = 0;
-
-        // Test case 4: Write to memory at address 20 and read back
-        #10;
-        mem_write = 1;
-        endereco = 64'd20;
-        write_data = 64'd100;
-        #10;
-        mem_write = 0;
-        mem_read = 1;
-        endereco = 64'd20;
-        #10;
-        if (read_data !== 64'd100) begin
-            $display("Test failed: Second write-then-read, expected = 100, got = %0d", read_data);
-        end else begin
-            $display("Test passed: Second write-then-read, read_data = %0d", read_data);
-        end
-        mem_read = 0;
-
-        // Finish simulation
-        $stop;
-    end
 endmodule

@@ -24,6 +24,11 @@ module instructions_memory(
      Memory[21] = 32'd21;
      Memory[22] = 32'd22;
      Memory[23] = 32'd23;
+     Memory[24] = 32'd24;
+     Memory[25] = 32'd25;
+     Memory[26] = 32'd26;
+     Memory[27] = 32'd27;
+     Memory[28] = 32'd28;
    end
 
    assign read_data = Memory[address];  

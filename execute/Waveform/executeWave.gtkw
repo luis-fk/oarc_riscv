@@ -1,0 +1,92 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Nov 17 18:27:17 2024
+[*]
+[dumpfile] "/home/usuario/faculdade/oarc/oarc_riscv/execute/wave.vcd"
+[dumpfile_mtime] "Sun Nov 17 17:49:05 2024"
+[dumpfile_size] 47922
+[savefile] "/home/usuario/faculdade/oarc/oarc_riscv/execute/Waveform/executeWave.gtkw"
+[timestart] 2740
+[size] 1920 1008
+[pos] -33 -33
+*-13.541418 72360 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] execute_tb.
+[treeopen] execute_tb.uut.
+[sst_width] 212
+[signals_width] 369
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@28
+execute_tb.clock
+@200
+-Reg
+@28
+execute_tb.uut.regE.clear
+execute_tb.uut.regE.clk
+@22
+execute_tb.uut.regE.d[334:0]
+execute_tb.uut.regE.q[334:0]
+@28
+execute_tb.uut.regE.reset
+@200
+-MUX3A
+@22
+execute_tb.uut.faemux.d0[63:0]
+execute_tb.uut.faemux.d1[63:0]
+execute_tb.uut.faemux.d2[63:0]
+@28
+execute_tb.uut.faemux.s[1:0]
+@22
+execute_tb.uut.faemux.y[63:0]
+@200
+-MUX3B
+@22
+execute_tb.uut.fbemux.d0[63:0]
+execute_tb.uut.fbemux.d1[63:0]
+execute_tb.uut.fbemux.d2[63:0]
+@28
+execute_tb.uut.fbemux.s[1:0]
+@22
+execute_tb.uut.fbemux.y[63:0]
+@200
+-MUX2
+@22
+execute_tb.uut.srcbmux.d0[63:0]
+execute_tb.uut.srcbmux.d1[63:0]
+@28
+execute_tb.uut.srcbmux.s
+@22
+execute_tb.uut.srcbmux.y[63:0]
+@200
+-Entrada
+@28
+execute_tb.ALUControlE[3:0]
+@22
+execute_tb.ALUResultM[63:0]
+@28
+execute_tb.ALUSrcE
+execute_tb.FlushE
+execute_tb.ForwardAE[1:0]
+execute_tb.ForwardBE[1:0]
+@22
+execute_tb.ImmExtD[63:0]
+execute_tb.PCD[63:0]
+execute_tb.PCPlus4D[63:0]
+execute_tb.RdD[4:0]
+execute_tb.ResultW[63:0]
+execute_tb.Rs1D[4:0]
+execute_tb.Rs2D[4:0]
+execute_tb.read_data1[63:0]
+execute_tb.read_data2[63:0]
+@200
+-ULA
+@420
+execute_tb.uut.ALU.result[63:0]
+@28
+execute_tb.uut.ALU.equal
+@420
+execute_tb.uut.ALU.A[63:0]
+@25
+execute_tb.uut.ALU.B[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

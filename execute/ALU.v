@@ -31,6 +31,9 @@ module ALU (
     wire [31:0] resShiftRightLogicalW;
     wire [31:0] resShiftRightArithW;
 
+
+    // 0 0 0 1
+    // 3 2 1 0
     /* Verifica se deve ser uma instrucao de subtracao */
     wire isSub;
     wire wire1;

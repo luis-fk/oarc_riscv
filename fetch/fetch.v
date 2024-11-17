@@ -1,33 +1,61 @@
 module fetch (
-    input branch,
     input clock,
     input reset_pc,
-    input [63:0] pc_target,
-    output reg [31:0] instruction,
-    output reg [63:0] pc_current_instruction,
-    output reg [63:0] pc_next_instruction
-);
-    wire [31:0] read_data;
-    wire [63:0] program_counter_mux;
-    wire [63:0] next_instruction_wire;
 
-    reg [63:0] program_counter;
+    //Input UC
+    input PCSrcE,
 
-    assign program_counter_mux = (branch == 1'b1) ? pc_target : next_instruction_wire;
-    assign next_instruction_wire = program_counter + 64'd1;
+    //Input Hazard
+    input StallF,
     
-    instructions_memory inst_mem (
-        .address(program_counter[10:0]),
-        .read_data(read_data)
+    //Input Execute
+    input [63:0] pc_target,
+
+    //Outputs
+
+    output [31:0] InstrF,        //RD do Instruction Memory
+    output [63:0] PCF,           //Saída do Reg
+    output [63:0] PCPlus4F    
+
+);
+    wire [63:0] s_PCF_Linha;     //Saída do Mux
+    wire [63:0] s_PCPlus4F;
+    wire [63:0] s_PCF;
+    
+    // MUX para selecionar o próximo valor do PC com base em PCSrcE
+
+    mux2 #(
+        .WIDTH(64)
+    ) PCinstruc (
+        .d0(s_PCPlus4F),
+        .d1(pc_target),
+        .s(PCSrcE),
+        .y(s_PCF_Linha)
     );
 
-    always @(posedge clock) begin
-        case (reset_pc)
-            1'b1:  program_counter <= 64'd0;
-            default: program_counter <= program_counter_mux;
-        endcase
-        instruction <= read_data;
-        pc_current_instruction <= program_counter;
-        pc_next_instruction <= next_instruction_wire;
-    end
+    // Flip-flop com enable e reset para o contador do programa
+    flopenr #(
+            .WIDTH(64)
+        ) 
+        pcreg
+        (
+            .clk(clock), 
+            .reset(reset_pc), 
+            .en(~StallF), 
+            .d(s_PCF_Linha), 
+            .q(s_PCF)
+        );
+
+    // Instância da memória de instruções
+    instructions_memory inst_mem (
+        .address(s_PCF[10:0]),
+        .read_data(InstrF)
+    );
+
+    //Somador
+    assign s_PCPlus4F = s_PCF + 64'd1;
+
+    assign PCF = s_PCF;
+    assign PCPlus4F = s_PCPlus4F;
+
 endmodule

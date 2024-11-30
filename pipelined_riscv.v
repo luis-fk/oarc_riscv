@@ -9,7 +9,7 @@ module pipelined_riscv(
     wire s_ALUSrcE;
     wire [2:0] s_ALUControlE;
     wire s_MemWriteM;
-    wire [1:0] s_ResultSrcW;
+    wire s_ResultSrcW;
 
     wire [6:0] s_opcode;
     wire [2:0] s_func3;
@@ -22,8 +22,8 @@ module pipelined_riscv(
     wire s_StallD;
     wire s_FlushD;
     wire s_FlushE; //Vai pra UC também
-    wire s_ForwardAE;
-    wire s_ForwardBE;
+    wire [1:0] s_ForwardAE;
+    wire [1:0] s_ForwardBE;
 
     wire [4:0] s_Rs1D;
     wire [4:0] s_Rs2D;
@@ -38,6 +38,8 @@ module pipelined_riscv(
     wire s_RegWriteM;
     wire s_RegWriteW; //Vai pra FD também
 
+    wire [4:0] s_RdW;
+
     pipelined_riscv_fd fd (
         .clock           (clock),
         .reset_pc        (reset_pc),
@@ -48,7 +50,7 @@ module pipelined_riscv(
 
             //Decode: 
         .ImmSrcD         (s_ImmSrcD),
-        .RegWriteW       (s_RegWriteW)
+        .RegWriteW       (s_RegWriteW),
 
             //Execute:
         .ALUSrcE         (s_ALUSrcE),
@@ -62,7 +64,7 @@ module pipelined_riscv(
 
         //Inputs do Hazard
             //Fetch:
-        StallF           (s_StallF),
+        .StallF           (s_StallF),
 
             //Decode:
         .StallD          (s_StallD),
@@ -76,7 +78,7 @@ module pipelined_riscv(
         //Outputs para a UC:
         .opcode          (s_opcode),
         .func3           (s_func3),
-        .func            (s_func7),
+        .func7           (s_func7),
         .zeroE           (s_zeroE),
 
         //Outputs para Hazard Unit
@@ -98,8 +100,8 @@ module pipelined_riscv(
     );
 
     cu cu (
-        .clock       (clock)
-        .reset       (reset_pc)
+        .clock       (clock),
+        .reset       (reset_pc),
         .opD         (s_opcode),
         .funct3D     (s_func3),
         .funct7b5D   (s_func7[5]),

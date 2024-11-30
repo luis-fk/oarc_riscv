@@ -1,85 +1,103 @@
+`timescale 1ns / 1ps
+
 module cu_tb;
 
     // Inputs
-    reg [6:0] op;
-    reg [2:0] funct3;
-    reg funct7b5;
-    reg Zero;
+    reg clock;
+    reg reset;
+
+    reg [6:0] opD;
+    reg [2:0] funct3D;
+    reg funct7b5D;
+    reg FlushE;
+    reg ZeroE;
 
     // Outputs
-    wire [1:0] ResultSrc;
-    wire MemWrite;
-    wire PCSrc;
-    wire ALUSrc;
-    wire RegWrite;
-    wire Jump;
-    wire [1:0] ImmSrc;
-    wire [2:0] ALUControl;
-    wire Branch;
+    wire [1:0] ImmSrcD;
+    wire PCSrcE;
+    wire [2:0] ALUControlE;
+    wire ALUSrcBE;
+    wire ResultSrcEb0;
+    wire MemWriteM;
+    wire RegWriteM;
+    wire RegWriteW;
+    wire [1:0] ResultSrcW;
 
     // Instantiate the Unit Under Test (UUT)
     cu uut (
-        .op(op),
-        .funct3(funct3),
-        .funct7b5(funct7b5),
-        .Zero(Zero),
-        .ResultSrc(ResultSrc),
-        .MemWrite(MemWrite),
-        .PCSrc(PCSrc),
-        .ALUSrc(ALUSrc),
-        .RegWrite(RegWrite),
-        .Jump(Jump),
-        .ImmSrc(ImmSrc),
-        .ALUControl(ALUControl),
-        .Branch(Branch)
+        .clock(clock),
+        .reset(reset),
+        .opD(opD),
+        .funct3D(funct3D),
+        .funct7b5D(funct7b5D),
+        .ImmSrcD(ImmSrcD),
+        .FlushE(FlushE),
+        .ZeroE(ZeroE),
+        .PCSrcE(PCSrcE),
+        .ALUControlE(ALUControlE),
+        .ALUSrcBE(ALUSrcBE),
+        .ResultSrcEb0(ResultSrcEb0),
+        .MemWriteM(MemWriteM),
+        .RegWriteM(RegWriteM),
+        .RegWriteW(RegWriteW),
+        .ResultSrcW(ResultSrcW)
     );
 
+    // Clock Generation
     initial begin
-
-        $dumpfile("cu_tb.vcd");
-        $dumpvars(0, cu_tb);
-
-        // Initialize Inputs
-        Zero = 0;
-
-        // Test 1: R-type instruction (e.g., add)
-        op = 7'b0110011; // opcode for R-type
-        funct3 = 3'b000;  // funct3 for add
-        funct7b5 = 0;     // funct7[5] for add
-        #10;
-
-        // Test 2: I-type instruction (e.g., addi)
-        op = 7'b0010011; // opcode for I-type
-        funct3 = 3'b000;  // funct3 for addi
-        funct7b5 = 0;
-        #10;
-
-        // Test 3: S-type instruction (e.g., store)
-        op = 7'b0100011; // opcode for S-type
-        funct3 = 3'b010; // funct3 for SW (store word)
-        funct7b5 = 0;
-        #10;
-
-        // Test 4: B-type instruction (e.g., branch if equal)
-        op = 7'b1100011; // opcode for B-type
-        funct3 = 3'b000; // funct3 for BEQ
-        funct7b5 = 0;
-        Zero = 1;        // Set Zero flag to 1 to simulate branch condition
-        #10;
-
-        // Test 5: J-type instruction (e.g., jump)
-        op = 7'b1101111; // opcode for JAL
-        funct3 = 3'b000;
-        funct7b5 = 0;
-        #10;
-
-        // Test 6: R-type instruction (e.g., subtract)
-        op = 7'b0110011; // opcode for R-type
-        funct3 = 3'b000;  // funct3 for subtract
-        funct7b5 = 1;     // funct7[5] for subtract
-        #10;
-
-        // Finish simulation
-        $stop;
+        clock = 0;
+        forever #5 clock = ~clock; // 10ns clock period
     end
+
+    // Test Sequence
+    initial begin
+        // Initialize inputs
+       $dumpfile("wave.vcd");
+        $dumpvars(0, cu_tb);
+        reset = 1;
+        opD = 7'b0;
+        funct3D = 3'b0;
+        funct7b5D = 0;
+        FlushE = 0;
+        ZeroE = 0;
+
+        // Hold reset for a few clock cycles
+        #15 reset = 0;
+
+        // Test Case 1: Add
+        opD = 7'b0110011;  // Example R-type opcode
+        funct3D = 3'b000;  // Example funct3 for ADD
+        funct7b5D = 1'b0;  // Example funct7 bit 5
+        FlushE = 1'b0;
+        ZeroE = 1'b0;
+        #20;
+
+        // Test Case 2: sub
+        funct7b5D = 1'b1;
+        #20;
+
+        // Test Case 3: or
+        funct3D = 3'b110; 
+        #20;
+
+        // Test Case 4: and
+        funct3D = 3'b111; 
+        #20;
+
+        // Test Case 5: lw
+        opD = 7'b0000011;
+        #20;
+
+        // Test Case 6: sw
+        opD = 7'b0100011;
+        #20;
+
+        // Test Case 7: beq
+        opD = 7'b1100011;
+        #20;
+
+        // End simulation
+        $finish;
+    end
+
 endmodule

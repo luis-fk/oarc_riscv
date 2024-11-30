@@ -11,11 +11,11 @@ module cu (
     // Execute Stage
     input FlushE,
     input ZeroE,
-    output PCSrcE //FD e Hazard
+    output PCSrcE, //FD e Hazard
 
     output [2:0] ALUControlE,
     output ALUSrcBE,
-    output [1:0] ResultSrcEb0,  //Hazard
+    output ResultSrcEb0,  //Hazard
 
     // Memory stage
 
@@ -24,7 +24,7 @@ module cu (
     
     //WriteBack
     output RegWriteW,
-    output ResultSrcW  //FD e Hazard
+    output [1:0] ResultSrcW  //FD e Hazard
 );
 
     wire [2:0] ALUControlWire;
@@ -76,28 +76,28 @@ module cu (
             BranchD, ALUControlD, ALUSrcBD}),
 
         .q({RegWriteE, ResultSrcE, MemWriteE, JumpE,
-            BranchE, ALUControlE, ALUSrcBE});
+            BranchE, ALUControlE, ALUSrcBE})
     );
 
     flopr #(
         .WIDTH(4) 
     ) controlregM (
-            .clk(), 
-            .reset(),
+            .clk(clock), 
+            .reset(reset),
             .d({RegWriteE, ResultSrcE, MemWriteE}),
-            .q({RegWriteM, ResultSrcM, MemWriteM});
+            .q({RegWriteM, ResultSrcM, MemWriteM})
     );
 
     flopr #(
             .WIDTH(3) 
     ) controlregW (
-            .clk(), 
-            .reset(),
+            .clk(clock), 
+            .reset(reset),
             .d({RegWriteM, ResultSrcM}),
-            .q({RegWriteW, ResultSrcW});
+            .q({RegWriteW, ResultSrcW})
     );
 
     assign ResultSrcEb0 = ResultSrcE[0];
-    assign PCSrc = (BranchE & ZeroE) | JumpE;
+    assign PCSrcE = (BranchE & ZeroE) | JumpE;
 
 endmodule

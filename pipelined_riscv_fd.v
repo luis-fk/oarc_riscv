@@ -39,7 +39,7 @@ module pipelined_riscv_fd (
     output [6:0] opcode,
     output [2:0] func3,
     output [6:0] func7,
-    output zeroE
+    output zeroE,
 
     //output Hazard Unit
 
@@ -74,8 +74,8 @@ module pipelined_riscv_fd (
     wire [63:0] pc_next_instruction_decode;
     wire [63:0] imm_extended_decode;
     wire [4:0] reg_destination_src_decode;
-    wire [4:0] Rs1D_wire,
-    wire [4:0] Rs2D_wire,
+    wire [4:0] Rs1D_wire;
+    wire [4:0] Rs2D_wire;
 
     /* wires entre execute e memory */
     wire [63:0] alu_result_execute;
@@ -124,7 +124,7 @@ module pipelined_riscv_fd (
       .InstrF                       (instruction_fetch),             // InstrF
       .PCF                          (pc_current_instruction_fetch),  // PCF
       .PCPlus4F                     (pc_next_instruction_fetch),     // PCPlus4F
-      .ImmSrcD                      (immSrcD),                       // n utilizado pelo imm_gen (Deveria vir da UC ImmSrcD)
+      .ImmSrcD                      (ImmSrcD),                       // n utilizado pelo imm_gen (Deveria vir da UC ImmSrcD)
       .ResultW                      (ResultW_wire),                  // Vem do WriteBack até o WD3
       .reg_to_write_src             (RdW_wire),                      //Recebe lá do WriteBack (A3)
       .WriteEnable                  (RegWriteW),                              //Vem da UC (RegWriteW)                              //Vem da UC
@@ -196,7 +196,7 @@ module pipelined_riscv_fd (
     //.mem_write_e            (mem_write_execute),
     .ALUResultE             (alu_result_execute),             //ALUResultE
     .WriteDataE             (write_data_execute),             //WriteDataE
-    .RdE                    (destination_register_execute),   //Rde
+    // .RdE                    (destination_register_execute),   //Rde
     .PCPlus4E               (pc_plus4_execute),           //PCPlus4E
 
     //Saída para o Hazard
@@ -222,7 +222,7 @@ module pipelined_riscv_fd (
     .RdM                (RdM_wire),        //RdM (Normal)
     .PCPlus4M           (next_instruction_memory),            //PCPlus4M
     .RD_Memory          (read_data_memory),                   //RD do Data Memory
-    .ALUResultM         (ALUResultM_wire),                  //ALUResultM
+    .ALUResultM         (ALUResultM_wire)                  //ALUResultM
 
     //.reg_write          (reg_write_memory),
     //.result_src         (result_src_memory)

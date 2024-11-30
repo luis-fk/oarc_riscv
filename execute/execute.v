@@ -33,6 +33,8 @@ module execute (
     input [4:0]  Rs1D,                        //Rs1D
     input [4:0]  Rs2D,                        //Rs2D
 
+    
+
     /* outputs */           
     output zeroE,
     output [63:0] PCTargetE,                  //PCTargetE
@@ -40,6 +42,8 @@ module execute (
     output [63:0] ALUResultE,
     output [63:0] WriteDataE,
     output [4:0]  RdE,
+    output [4:0] Rs1E,
+    output [4:0] Rs2E,
     output [63:0] PCPlus4E              //PCPlus4E
 );
 

@@ -9,7 +9,7 @@ module pipelined_riscv(
     wire s_ALUSrcE;
     wire [2:0] s_ALUControlE;
     wire s_MemWriteM;
-    wire s_ResultSrcW;
+    wire [1:0] s_ResultSrcW;
 
     wire [6:0] s_opcode;
     wire [2:0] s_func3;

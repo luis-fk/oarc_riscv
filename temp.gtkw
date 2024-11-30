@@ -1,63 +1,61 @@
 [*]
 [*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
-[*] Mon Nov 11 00:49:30 2024
+[*] Sat Nov 30 23:07:58 2024
 [*]
-[dumpfile] "D:\Studies\materiais\Sistemas Digitais\SD II\oarc\wave.vcd"
-[dumpfile_mtime] "Mon Nov 11 00:44:53 2024"
-[dumpfile_size] 22020
-[savefile] "D:\Studies\materiais\Sistemas Digitais\SD II\oarc\temp.gtkw"
-[timestart] 103
-[size] 1536 801
-[pos] -61 -61
-*-4.000000 133 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[dumpfile] "C:\Users\berta\Documents\oarc_riscv\wave.vcd"
+[dumpfile_mtime] "Sat Nov 30 22:56:55 2024"
+[dumpfile_size] 29694
+[savefile] "C:\Users\berta\Documents\oarc_riscv\temp.gtkw"
+[timestart] 80
+[size] 1366 745
+[pos] -87 -87
+*-5.000000 121 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] pipelined_riscv_tb.
 [treeopen] pipelined_riscv_tb.uut.
 [treeopen] pipelined_riscv_tb.uut.fd.
+[treeopen] pipelined_riscv_tb.uut.fd.d.
 [treeopen] pipelined_riscv_tb.uut.fd.e.
 [treeopen] pipelined_riscv_tb.uut.fd.f.
 [treeopen] pipelined_riscv_tb.uut.fd.m.
+[treeopen] pipelined_riscv_tb.uut.fd.wb.
 [sst_width] 260
-[signals_width] 254
+[signals_width] 338
 [sst_expanded] 1
-[sst_vpaned_height] 257
+[sst_vpaned_height] 431
 @28
-pipelined_riscv_tb.uut.fd.d.register_file.clk
 pipelined_riscv_tb.uut.reset_pc
+pipelined_riscv_tb.clock
 @200
 -Fetch
-@22
-pipelined_riscv_tb.uut.fd.f.next_instruction_wire[63:0]
-pipelined_riscv_tb.uut.fd.f.program_counter[63:0]
-pipelined_riscv_tb.uut.fd.f.instruction[31:0]
-pipelined_riscv_tb.uut.fd.f.pc_target[63:0]
 @28
-pipelined_riscv_tb.uut.fd.f.branch
+[color] 5
+pipelined_riscv_tb.uut.fd.f.InstrF[31:0]
 @22
-pipelined_riscv_tb.uut.fd.f.program_counter_mux[63:0]
-pipelined_riscv_tb.uut.fd.f.pc_current_instruction[63:0]
-pipelined_riscv_tb.uut.fd.f.pc_next_instruction[63:0]
-pipelined_riscv_tb.uut.fd.f.read_data[31:0]
+[color] 2
+pipelined_riscv_tb.uut.fd.f.pc_target[63:0]
 @200
 -Decode
--Execute
 @28
-pipelined_riscv_tb.uut.fd.e.alu_src
+pipelined_riscv_tb.uut.fd.d.RegisterFile.We
 @22
-pipelined_riscv_tb.uut.fd.e.ALU.A[63:0]
-pipelined_riscv_tb.uut.fd.e.ALU.B[63:0]
-pipelined_riscv_tb.uut.fd.e.ALU.result[63:0]
-@200
--Memory
-@28
-pipelined_riscv_tb.uut.fd.m.mem_write
-@22
-pipelined_riscv_tb.uut.fd.m.alu_result[63:0]
-pipelined_riscv_tb.uut.fd.m.write_data_m[63:0]
-pipelined_riscv_tb.uut.fd.m.mem_data_wire[63:0]
-pipelined_riscv_tb.uut.fd.m.alu_result_m[63:0]
-pipelined_riscv_tb.uut.fd.m.rd[4:0]
-pipelined_riscv_tb.uut.fd.m.data_mem.read_data[63:0]
+pipelined_riscv_tb.uut.fd.d.RegisterFile.Rw[4:0]
+pipelined_riscv_tb.uut.fd.d.reg_to_write_src[4:0]
+pipelined_riscv_tb.uut.fd.RdW[4:0]
+pipelined_riscv_tb.uut.fd.RdW_wire[4:0]
+pipelined_riscv_tb.uut.fd.wb.RdW[4:0]
+pipelined_riscv_tb.uut.fd.m.RdM[4:0]
 @23
+pipelined_riscv_tb.uut.fd.m.RdE[4:0]
+@22
+pipelined_riscv_tb.uut.fd.e.RdE[4:0]
+pipelined_riscv_tb.uut.fd.d.RegisterFile.din[63:0]
+pipelined_riscv_tb.uut.fd.d.read_data1[63:0]
+pipelined_riscv_tb.uut.fd.d.read_data2[63:0]
+@200
+-Execute
+-Memory
+@22
+pipelined_riscv_tb.uut.fd.m.data_mem.read_data[63:0]
 pipelined_riscv_tb.uut.fd.m.data_mem.endereco[63:0]
 @200
 -Write back

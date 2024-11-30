@@ -32,8 +32,8 @@ module pipelined_riscv_fd (
 
       //Execute:
     input FlushE,
-    input ForwardAE,
-    input ForwardBE,
+    input [1:0] ForwardAE,
+    input [1:0] ForwardBE,
 
     // output signals_to_control (Para a UC)
     output [6:0] opcode,
@@ -80,7 +80,6 @@ module pipelined_riscv_fd (
     /* wires entre execute e memory */
     wire [63:0] alu_result_execute;
     wire [63:0] write_data_execute;
-    wire [4:0] destination_register_execute;
     wire [63:0] pc_plus4_execute;
 
     /* wires entre memory e write_back */
@@ -196,14 +195,12 @@ module pipelined_riscv_fd (
     //.mem_write_e            (mem_write_execute),
     .ALUResultE             (alu_result_execute),             //ALUResultE
     .WriteDataE             (write_data_execute),             //WriteDataE
-    // .RdE                    (destination_register_execute),   //Rde
     .PCPlus4E               (pc_plus4_execute),           //PCPlus4E
 
     //Saída para o Hazard
     .Rs1E                    (Rs1E),
     .Rs2E                    (Rs2E),
     .RdE                     (RdE)
-
 );
 
   memory m (
@@ -211,7 +208,7 @@ module pipelined_riscv_fd (
     .reset              (reset_pc),
     .ALUResultE         (alu_result_execute),                 //ALUResultE
     .WriteDataE         (write_data_execute),                 //WriteDataE  
-    .RdE                (destination_register_execute),       //RdE
+    .RdE                (RdE),       //RdE
     .PCPlus4E           (pc_plus4_execute),                   //PCPlus4E
     .MemWriteM          (MemWriteM),                          
     //.reg_write_m        (reg_write_execute),
@@ -232,7 +229,7 @@ module pipelined_riscv_fd (
     .clock              (clock),
     .reset              (reset_pc),
     //Inputs do Memory
-    .AluResultM         (ALUResultM_wire),
+    .ALUResultM         (ALUResultM_wire),
     .ReadDataM          (read_data_memory),
     .PCPlus4M           (next_instruction_memory),
     .RdM                (RdM_wire),

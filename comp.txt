@@ -37,3 +37,4 @@ cu/floprc.v
 write_back\flopr.v
 write_back\mux3.v
 write_back\write_back.v
+pipelined_riscv_tb.v

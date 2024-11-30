@@ -13,7 +13,7 @@ module pipelined_riscv_fd (
 
       //Execute:
     input       ALUSrcE,
-    input [3:0] ALUControlE,
+    input [2:0] ALUControlE,
 
       //Memory:
     input       MemWriteM,

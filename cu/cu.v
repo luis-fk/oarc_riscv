@@ -13,7 +13,7 @@ module cu (
     input ZeroE,
     output PCSrcE //FD e Hazard
 
-    output [3:0] ALUControlE,
+    output [2:0] ALUControlE,
     output ALUSrcBE,
     output [1:0] ResultSrcEb0,  //Hazard
 
@@ -63,11 +63,11 @@ module cu (
         .funct3(funct3D), 
         .funct7b5(funct7b5D), 
         .ALUOp(ALUOpD), 
-        .ALUControl(ALUControlWire)
+        .ALUControl(ALUControlD)
     );
 
     floprc #(
-        .WIDTH(335)
+        .WIDTH(10)
     ) controlregE (
         .clk(clock),
         .reset(reset),
@@ -80,7 +80,7 @@ module cu (
     );
 
     flopr #(
-            .WIDTH() 
+        .WIDTH(4) 
     ) controlregM (
             .clk(), 
             .reset(),
@@ -89,7 +89,7 @@ module cu (
     );
 
     flopr #(
-            .WIDTH(2) 
+            .WIDTH(3) 
     ) controlregW (
             .clk(), 
             .reset(),
@@ -97,8 +97,7 @@ module cu (
             .q({RegWriteW, ResultSrcW});
     );
 
-    assign ALUControlE = {1'b0, ALUControlWire};
     assign ResultSrcEb0 = ResultSrcE[0];
-    assign PCSrc = BranchE & (ZeroE | JumpE);
+    assign PCSrc = (BranchE & ZeroE) | JumpE;
 
 endmodule

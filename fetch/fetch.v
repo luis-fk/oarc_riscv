@@ -53,7 +53,7 @@ module fetch (
     );
 
     //Somador
-    assign s_PCPlus4F = s_PCF + 64'd1;
+    assign s_PCPlus4F = s_PCF + 64'd4;
 
     assign PCF = s_PCF;
     assign PCPlus4F = s_PCPlus4F;

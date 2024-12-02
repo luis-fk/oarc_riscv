@@ -1,3 +1,0 @@
-fetch.v
-instruction_memory.v
-fetch_tb.v

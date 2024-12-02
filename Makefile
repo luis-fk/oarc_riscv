@@ -1,39 +1,37 @@
-# Nome do arquivo de saída do iverilog
+# Variáveis
+IVERILOG = iverilog
+VVP = vvp
+GTKWAVE = gtkwave
 OUTPUT = wave.vvp
+VCD = wave.vcd
+TESTBENCH = top/top_testbench.sv top/top.sv top/imem.sv top/dmem.sv \
+            riscv/datapath/adder.sv riscv/datapath/alu.sv \
+            riscv/datapath/datapath.sv riscv/datapath/extend.sv \
+            riscv/datapath/flopenr.sv riscv/datapath/floprc.sv \
+            riscv/datapath/flopr.sv riscv/datapath/mux2.sv \
+            riscv/datapath/mux3.sv riscv/datapath/regfile.sv \
+            riscv/datapath/hazard.sv riscv/datapath/flopenrc.sv \
+            riscv/riscv.sv controller/controller.sv controller/maindec.sv \
+            controller/aludec.sv
 
-# Lista de fontes
-SOURCES = pipelined_riscv_tb.v pipelined_riscv.v pipelined_riscv_fd.v \
-          ./cu/aludec.v ./cu/cu.v ./cu/flopr.v ./cu/floprc.v ./cu/maindec.v \
-          ./decode/ExtendImm.v ./decode/decode.v ./decode/flopenrc.v \
-          ./decode/BancoRegistradores/BancoRegistradores.v \
-          ./decode/BancoRegistradores/Codificador.v \
-          ./decode/BancoRegistradores/Mux32x64bits.v \
-          ./decode/BancoRegistradores/RegistradorZero.v \
-          ./decode/BancoRegistradores/Registrador.v \
-          ./execute/execute.v ./execute/ULA.v ./execute/mux2.v ./execute/mux3.v \
-          ./fetch/fetch.v ./fetch/flopenr.v ./fetch/instruction_memory.v \
-          ./hazard/hazard.v \
-          ./memory/data_memory.v ./memory/memory.v \
-          ./write_back/write_back.v
+# Alvo padrão
+all: $(VCD)
 
-# Nome do arquivo gerado pelo VVP
-WAVE = wave.vcd
+# Compila o código com iverilog
+$(OUTPUT): $(TESTBENCH)
+	$(IVERILOG) -g2012 -o $@ $^
 
-# Alvo padrão (compilar, executar e abrir no GTKWave)
-all: view
+# Executa o código compilado e gera o VCD
+$(VCD): $(OUTPUT)
+	$(VVP) $<
 
-# Compilar com iverilog
-compile:
-	iverilog -o $(OUTPUT) $(SOURCES)
+# Abre o gtkwave
+wave: $(VCD)
+	$(GTKWAVE) $<
 
-# Executar com vvp
-simulate: compile
-	vvp $(OUTPUT)
-
-# Abrir no GTKWave
-view: simulate
-	gtkwave $(WAVE)
-
-# Limpar os arquivos gerados
+# Limpa arquivos gerados
 clean:
-	rm -f $(OUTPUT) $(WAVE)
+	rm -f $(OUTPUT) $(VCD)
+
+# Faz tudo (compilar, executar e abrir gtkwave)
+.PHONY: all clean wave
